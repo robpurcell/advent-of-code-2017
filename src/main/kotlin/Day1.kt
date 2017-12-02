@@ -48,7 +48,8 @@ fun captcha2(input: String): Int {
   return sum
 }
 
-fun intValue(input: Char) = input.toInt() - 48
+fun intValue(input: Char) = Integer.valueOf(input.toString())
+fun intValue(input: String) = Integer.valueOf(input)
 
 fun indexPastEnd(input: String, index: Int): Int {
   return if (index < input.length) {
