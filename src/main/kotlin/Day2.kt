@@ -31,3 +31,35 @@ fun processSpreadsheet(input: String): Int {
   val rows = input.split("\n")
   return rows.sumBy { checksum(it) }
 }
+
+fun checksum2(row: String): Int {
+  val numbersAsListOfString = row.split("\t")
+  val numbers = numbersAsListOfString.map({n -> intValue(n)})
+  val sortedNumbers = numbers.sorted()
+
+  val (a, b) = pairThatDivides(sortedNumbers)
+  val checksum = b / a
+
+  println("Checksum = $checksum")
+
+  return checksum
+}
+
+fun pairThatDivides(sortedNumbers: List<Int>): Pair<Int, Int> {
+  for (i in 0 until sortedNumbers.size - 1) {
+    val numbersToCheck = sortedNumbers.takeLast(sortedNumbers.size - (i + 1))
+    for (j in 0 until numbersToCheck.size) {
+      val (a, b) = Pair(sortedNumbers[i], numbersToCheck[j])
+      if (b % a == 0) {
+        println("Pair($a, $b)")
+        return Pair(a, b)
+      }
+    }
+  }
+  return Pair(0, 0)
+}
+
+fun processSpreadsheet2(input: String): Int {
+  val rows = input.split("\n")
+  return rows.sumBy { checksum2(it) }
+}
