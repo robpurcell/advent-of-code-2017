@@ -14,6 +14,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 fun captcha(input: String): Int {
   var sum = 0
 
@@ -32,4 +33,28 @@ fun captcha(input: String): Int {
   return sum
 }
 
-private fun intValue(input: Char) = input.toInt() - 48
+fun captcha2(input: String): Int {
+  var sum = 0
+  val increment = input.length / 2
+
+  for (i in 0..input.length - 1) {
+    val (a, b) = Pair(indexPastEnd(input, i), indexPastEnd(input, i + increment))
+
+    if (a == b) {
+      sum += a
+    }
+  }
+
+  return sum
+}
+
+fun intValue(input: Char) = input.toInt() - 48
+
+fun indexPastEnd(input: String, index: Int): Int {
+  return if (index < input.length) {
+    intValue(input[index])
+  }
+  else {
+    intValue(input[index - input.length])
+  }
+}
