@@ -37,7 +37,7 @@ fun captcha2(input: String): Int {
   var sum = 0
   val increment = input.length / 2
 
-  for (i in 0..input.length - 1) {
+  for (i in 0 until input.length) {
     val (a, b) = Pair(indexPastEnd(input, i), indexPastEnd(input, i + increment))
 
     if (a == b) {
@@ -48,8 +48,8 @@ fun captcha2(input: String): Int {
   return sum
 }
 
-fun intValue(input: Char) = Integer.valueOf(input.toString())
-fun intValue(input: String) = Integer.valueOf(input)
+fun intValue(input: Char): Int = Integer.valueOf(input.toString())
+fun intValue(input: String): Int = Integer.valueOf(input)
 
 fun indexPastEnd(input: String, index: Int): Int {
   return if (index < input.length) {

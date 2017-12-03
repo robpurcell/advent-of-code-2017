@@ -30,6 +30,7 @@ class Day1Spec : StringSpec() {
       val answer = captcha(data)
 
       println("Day 1.1 answer = $answer")
+      answer shouldBe 1029
     }
 
     // Now, instead of considering the next digit, it wants you to consider the digit halfway around the circular list.
@@ -62,6 +63,7 @@ class Day1Spec : StringSpec() {
       val answer = captcha2(data)
 
       println("Day 1.2 answer = $answer")
+      answer shouldBe 1220
     }
 
     // Test helpers
