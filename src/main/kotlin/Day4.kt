@@ -18,12 +18,20 @@ import java.io.File
 // limitations under the License.
 
 fun isValidPass(pass: String): Boolean {
+  return validatePass(pass, ::contains)
+}
+
+fun isValidPassNoAnagrams(pass: String): Boolean {
+  return validatePass(pass, ::containsAnagram)
+}
+
+fun validatePass(pass: String, comparison: (List<String>, String) -> Boolean): Boolean {
   val validWords = mutableListOf<String>()
 
   val words = pass.split(" ")
 
   for (w in words) {
-    if (validWords.contains(w)) {
+    if (comparison(validWords, w)) {
       return false
     }
     else {
@@ -33,13 +41,36 @@ fun isValidPass(pass: String): Boolean {
   return true
 }
 
-fun countValidPhrases(f: File): Int {
+fun countValidPhrasesBase(f: File, validation: (String) -> Boolean): Int {
   var count = 0
 
   f.forEachLine { l ->
 
-    if (!l.equals("") && isValidPass(l)) count += 1
+    if (l != "" && validation(l)) count += 1
   }
 
   return count
+}
+
+fun countValidPhrases(f: File): Int {
+  return countValidPhrasesBase(f, ::isValidPass)
+}
+
+fun countValidPhrasesNoAnagram(f: File): Int {
+  return countValidPhrasesBase(f, ::isValidPassNoAnagrams)
+}
+
+fun contains(words: List<String>, word: String): Boolean {
+  return words.contains(word)
+}
+
+fun containsAnagram(words: List<String>, inputWord: String): Boolean {
+  val sortedInputWord = inputWord.toList().sorted()
+  for (w in words) {
+    val sortedW = w.toList().sorted()
+
+    if (sortedW == sortedInputWord)
+      return true
+  }
+  return false
 }

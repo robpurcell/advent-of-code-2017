@@ -51,5 +51,47 @@ class Day4Spec : StringSpec() {
       println("Day 4.1 answer = $answer")
     }
 
+    // Now, a valid passphrase must contain no two words that are anagrams of each other -
+    // that is, a passphrase is invalid if any word's letters can be rearranged to form any
+    // other word in the passphrase.
+
+    "abcde fghij is a valid passphrase." {
+      isValidPassNoAnagrams("abcde fghij") shouldBe true
+    }
+
+    "abcde xyz ecdab is not valid - the letters from the third word can be rearranged to form the first word." {
+      isValidPassNoAnagrams("abcde xyz ecdab") shouldBe false
+    }
+
+    "a ab abc abd abf abj is a valid passphrase, because all letters need to be used when forming another word." {
+      isValidPassNoAnagrams("a ab abc abd abf abj") shouldBe true
+    }
+
+    "iiii oiii ooii oooi oooo is valid." {
+      isValidPassNoAnagrams("iiii oiii ooii oooi oooo") shouldBe true
+    }
+
+    "oiii ioii iioi iiio is not valid - any of these words can be rearranged to form any other word." {
+      isValidPassNoAnagrams("oiii ioii iioi iiio") shouldBe false
+    }
+
+    "Day 4.2 answer is ..." {
+      val file = File("/Users/rob/Development/source/github/advent-of-code-2017/src/test/kotlin/Day4Data.txt")
+      val answer = countValidPhrasesNoAnagram(file)
+
+      answer shouldBe 208
+
+      println("Day 4.2 answer = $answer")
+    }
+
+
+    "abcd is an anagram of dcba" {
+      containsAnagram(listOf("abcd"), "dcba") shouldBe true
+    }
+
+    "abcd is not an anagram of dcb" {
+      containsAnagram(listOf("abcd"), "dcb") shouldBe false
+    }
+
   }
 }
