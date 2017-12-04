@@ -40,9 +40,6 @@ fun coordinatesOfFirstNumberInLoop(loopNumber: Int): Pair<Int, Int> {
 }
 
 fun coordinates(number: Int): Pair<Int, Int> {
-  a
-
-
   return Pair(0, 0)
 }
 
