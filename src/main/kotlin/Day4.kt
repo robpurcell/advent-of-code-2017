@@ -45,7 +45,6 @@ fun countValidPhrasesBase(f: File, validation: (String) -> Boolean): Int {
   var count = 0
 
   f.forEachLine { l ->
-
     if (l != "" && validation(l)) count += 1
   }
 
