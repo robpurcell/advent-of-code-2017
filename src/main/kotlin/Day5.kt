@@ -28,7 +28,6 @@ fun countJumps(message: String, decider: (Int) -> Int): Int {
 
     val newValue = currentValue.toInt() + decider(currentValue.toInt())
     messageArray[index] = newValue.toString()
-//    println(messageArray)
     index += currentValue.toInt()
     jumpCounter++
   }
@@ -43,6 +42,7 @@ fun decideIncrement(i: Int): Int {
   }
 }
 
+@Suppress("UNUSED_PARAMETER")
 fun standardIncrement(i: Int): Int {
   return 1
 }
