@@ -1,5 +1,3 @@
-import java.io.File
-
 // Copyright 2017 Purcell Informatics Limited
 //
 // See the LICENCE file distributed with this work for additional
@@ -16,14 +14,28 @@ import java.io.File
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+import java.io.File
 
 val pipeExpr = Regex("(\\w)*<->(\\w)*")
 
 fun countPipes(input: String): Int {
-  val pipes = parsePipes(input)
+  return pipeGroup(input).size
+}
 
-  val traversal = traverse("0", pipes).toSet()
-  return traversal.size
+fun countGroups(input: String): Int {
+  var remainder = parsePipes(input.trimEnd()).keys - pipeGroup(input)
+  var count = 1
+
+  while (remainder.isNotEmpty()) {
+    remainder -= pipeGroup(input, remainder.first())
+    count++
+  }
+  return count
+}
+
+private fun pipeGroup(input: String, initial: String = "0"): Set<String> {
+  val pipes = parsePipes(input)
+  return traverse(initial, pipes).toSet()
 }
 
 private fun traverse(index: String, pipes: Map<String, List<String>>): List<String> {
@@ -52,4 +64,8 @@ fun parsePipes(input: String): Map<String, List<String>> {
 
 fun countPipesFile(f: File): Int {
   return countPipes(f.readText())
+}
+
+fun countGroupsFile(f: File): Int {
+  return countGroups(f.readText())
 }

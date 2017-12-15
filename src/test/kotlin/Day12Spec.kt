@@ -45,10 +45,32 @@ class Day12Spec : StringSpec() {
       val file = File("/Users/rob/Development/source/github/advent-of-code-2017/src/test/kotlin/Day12Data.txt")
       val answer = countPipesFile(file)
 
-//      answer shouldBe 26889114
+      answer shouldBe 113
 
       println("Day 12.1 answer = $answer")
     }
 
+    """Contains 2 groups:
+       0 <-> 2
+       1 <-> 1
+       2 <-> 0, 3, 4
+       3 <-> 2, 4
+       4 <-> 2, 3, 6
+       5 <-> 6
+       6 <-> 4, 5
+    """ {
+      countGroups("0 <-> 2\n1 <-> 1\n2 <-> 0, 3, 4\n3 <-> 2, 4\n4 <-> 2, 3, 6\n5 <-> 6\n6 <-> 4, 5") shouldBe 2
+    }
+
+    "Day 12.2 answer is ..." {
+      val file = File("/Users/rob/Development/source/github/advent-of-code-2017/src/test/kotlin/Day12Data.txt")
+      val answer = countGroupsFile(file)
+
+      answer shouldBe 202
+
+      println("Day 12.2 answer = $answer")
+    }
+
   }
+
 }
