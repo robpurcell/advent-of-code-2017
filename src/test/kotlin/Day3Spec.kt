@@ -1,6 +1,3 @@
-import io.kotlintest.matchers.shouldBe
-import io.kotlintest.specs.StringSpec
-
 // Copyright 2017 Purcell Informatics Limited
 //
 // See the LICENCE file distributed with this work for additional
@@ -22,67 +19,106 @@ import io.kotlintest.specs.StringSpec
 // by programs that can only move up, down, left, or right.
 //
 // They always take the shortest path: the Manhattan Distance between the location of the data and square 1.
+import io.kotlintest.matchers.shouldBe
+import io.kotlintest.specs.StringSpec
+import kotlin.math.ceil
+import kotlin.math.round
 
 class Day3Spec : StringSpec() {
   init {
 
     "Data from square 1 is carried 0 steps, since it's at the access port." {
-
+      manhattanDistance(Pair(0,0), navigateSpiral(1)) shouldBe 0
     }
 
-
     "Data from square 12 is carried 3 steps, such as: down, left, left." {
+      manhattanDistance(Pair(0,0), navigateSpiral(12)) shouldBe 3
     }
 
     "Data from square 23 is carried only 2 steps: up twice." {
-
+      manhattanDistance(Pair(0,0), navigateSpiral(23)) shouldBe 2
     }
-    "Data from square 1024 must be carried 31 steps." {
 
+    "Data from square 1024 must be carried 31 steps." {
+      manhattanDistance(Pair(0,0), navigateSpiral(1024)) shouldBe 31
     }
 
     "Taxicab distance (0, 0) to (3, 3) is 9." {
       manhattanDistance(Pair(0, 0), Pair(3, 3)) shouldBe 6
     }
 
-    "lastNumberInLoop test" {
-      lastNumberInLoop(1) shouldBe 1
-      lastNumberInLoop(2) shouldBe 9
-      lastNumberInLoop(3) shouldBe 25
-      lastNumberInLoop(4) shouldBe 49
+//    17  16  15  14  13
+//    18   5   4   3  12
+//    19   6   1   2  11
+//    20   7   8   9  10
+//    21  22  23---> ...
+
+    "2 is at (1, 0) when navigating the spiral" {
+      navigateSpiral(2) shouldBe Pair(1, 0)
     }
 
-    "sizeOfLoop test" {
-      sizeOfLoop(1) shouldBe 1
-      sizeOfLoop(2) shouldBe 8
-      sizeOfLoop(3) shouldBe 16
-      sizeOfLoop(4) shouldBe 24
+    "3 is at (1, 1) when navigating the spiral" {
+      navigateSpiral(3) shouldBe Pair(1, 1)
     }
 
-    "firstNumberInLoop test" {
-      firstNumberInLoop(2) shouldBe 2
-      firstNumberInLoop(3) shouldBe 10
-      firstNumberInLoop(4) shouldBe 26
-      firstNumberInLoop(5) shouldBe 50
+    "5 is at (-1, -1) when navigating the spiral" {
+      navigateSpiral(5) shouldBe Pair(-1, 1)
     }
 
-    "coordinatesOfFirstNumberInLoop test" {
-      coordinatesOfFirstNumberInLoop(1) shouldBe Pair(0, 0)
-      coordinatesOfFirstNumberInLoop(2) shouldBe Pair(1, 0)
-      coordinatesOfFirstNumberInLoop(3) shouldBe Pair(2, -1)
-      coordinatesOfFirstNumberInLoop(4) shouldBe Pair(3, -2)
-      coordinatesOfFirstNumberInLoop(5) shouldBe Pair(4, -3)
+    "7 is at (-1, -1) when navigating the spiral" {
+      navigateSpiral(7) shouldBe Pair(-1, -1)
     }
 
-    "findLoopNumber test" {
-      findLoopNumber(3) shouldBe 2
-      findLoopNumber(12) shouldBe 3
-      findLoopNumber(27) shouldBe 4
+    "10 is at (2, -1) when navigating the spiral" {
+      navigateSpiral(10) shouldBe Pair(2, -1)
     }
 
-    "12 is at (2, 1)" {
-      coordinates(12) shouldBe Pair(2, 1)
+    "12 is at (2, 1) when navigating the spiral" {
+      navigateSpiral(12) shouldBe Pair(2, 1)
     }
 
+    "12 is at (2, 1) when navigating the spiral" {
+      navigateSpiral(12) shouldBe Pair(2, 1)
+    }
+
+    "22 is at (-1, -2) when navigating the spiral" {
+      navigateSpiral(22) shouldBe Pair(-1, -2)
+    }
+
+    "19 is at (-2, 0) when navigating the spiral" {
+      navigateSpiral(19) shouldBe Pair(-2, 0)
+    }
+
+    "26 is at (3, -2) when navigating the spiral" {
+      navigateSpiral(26) shouldBe Pair(3, -2)
+    }
+
+    "4 is at (0, 1) when navigating the spiral" {
+      navigateSpiral(4) shouldBe Pair(0, 1)
+    }
+
+    "nextMove" {
+      nextMove(::right) shouldBe ::up
+      nextMove(::up) shouldBe ::left
+      nextMove(::left) shouldBe ::down
+      nextMove(::down) shouldBe ::right
+    }
+
+    "roundUp" {
+      ceil(1.0/2.0) shouldBe 1.0
+      ceil(2.0/2.0) shouldBe 1.0
+      ceil(3.0/2.0) shouldBe 2.0
+      ceil(4.0/2.0) shouldBe 2.0
+      ceil(5.0/2.0) shouldBe 3.0
+      ceil(6.0/2.0) shouldBe 3.0
+    }
+
+    "Day 3.1 answer is..." {
+      val data = 361527
+      val answer = manhattanDistance(Pair(0,0), navigateSpiral(data))
+
+      println("Day 3.1 answer = $answer")
+      answer shouldBe 326
+    }
   }
 }

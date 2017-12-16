@@ -1,5 +1,3 @@
-import java.lang.Math.*
-
 // Copyright 2017 Purcell Informatics Limited
 //
 // See the LICENCE file distributed with this work for additional
@@ -16,40 +14,72 @@ import java.lang.Math.*
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+import java.lang.Math.abs
+import kotlin.math.ceil
 
 fun manhattanDistance(p: Pair<Int, Int>, q: Pair<Int, Int>): Int {
   return abs(p.first - q.first) + abs(p.second - q.second)
 }
 
-fun sizeOfLoop(i: Int): Int {
-  return if (i == 1) 1
-  else lastNumberInLoop(i) - lastNumberInLoop(i - 1)
-}
+fun navigateSpiral(number: Int): Pair<Int, Int> {
+  assert(number >= 1)
 
-fun lastNumberInLoop(loopNumber: Int): Int {
-  return pow((2 * loopNumber - 1).toDouble(), 2.0).toInt()
-}
+  var index = 1
+  var coords = Pair(0, 0)
+  var count = 1
+  var currentMove: () -> Pair<Int, Int> = ::right
 
-fun firstNumberInLoop(loopNumber: Int): Int {
-  return lastNumberInLoop(loopNumber - 1) + 1
-}
-
-fun coordinatesOfFirstNumberInLoop(loopNumber: Int): Pair<Int, Int> {
-  return if (loopNumber == 1) Pair(0, 0)
-  else Pair(loopNumber - 1, 2 - loopNumber)
-}
-
-fun coordinates(number: Int): Pair<Int, Int> {
-  return Pair(0, 0)
-}
-
-fun findLoopNumber(i: Int): Int {
-  var loopNumber = 0
-  var counter = i
-  while (counter > 1) {
-    counter -= lastNumberInLoop(loopNumber)
-    loopNumber += 1
+  while (count < number) {
+    if (count + changeIncrement(index) <= number) {
+      val increment = changeIncrement(index)
+      coords = move(coords, currentMove, increment)
+      currentMove = nextMove(currentMove)
+      count += increment
+      index += 1
+    }
+    else {
+      return move(coords, currentMove, number - count)
+    }
   }
 
-  return loopNumber
+  return coords
+}
+
+fun move(coords: Pair<Int, Int>, direction: () -> Pair<Int, Int>, stepsToMove: Int): Pair<Int, Int> {
+  return add(coords, scale(direction(), stepsToMove))
+}
+
+fun right(): Pair<Int, Int> {
+  return Pair(1, 0)
+}
+
+fun up(): Pair<Int, Int> {
+  return Pair(0, 1)
+}
+
+fun left(): Pair<Int, Int> {
+  return Pair(-1, 0)
+}
+
+fun down(): Pair<Int, Int> {
+  return Pair(0, -1)
+}
+
+fun nextMove(currentMove: () -> Pair<Int, Int>): () -> Pair<Int, Int> {
+  val moves = arrayListOf<() -> Pair<Int, Int>>(::right, ::up, ::left, ::down)
+  val currentMoveIndex = moves.indexOf(currentMove)
+  val nextMoveIndex = (currentMoveIndex + 1) % 4
+  return moves[nextMoveIndex]
+}
+
+private fun add(a: Pair<Int, Int>, b: Pair<Int, Int>): Pair<Int, Int> {
+  return Pair(a.first + b.first, a.second + b.second)
+}
+
+private fun scale(a: Pair<Int, Int>, b: Int): Pair<Int, Int> {
+  return Pair(a.first * b, a.second * b)
+}
+
+fun changeIncrement(count: Int): Int {
+  return ceil(count / 2.0).toInt()
 }
